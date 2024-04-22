@@ -22,6 +22,11 @@ class MainActivity : ComponentActivity() {
         val editText = findViewById<EditText>(R.id.editText)
 
         button.setOnClickListener {
+            if (editText.text.isEmpty()) {
+                editText.error = "Preencha um valor"
+                return@setOnClickListener
+            }
+
             val item = ItemModel(
                 name = editText.text.toString()
             )
