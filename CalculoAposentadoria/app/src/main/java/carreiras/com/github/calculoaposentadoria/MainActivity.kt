@@ -1,46 +1,44 @@
 package carreiras.com.github.calculoaposentadoria
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import carreiras.com.github.calculoaposentadoria.ui.theme.CalculoAposentadoriaTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            CalculoAposentadoriaTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+
+        setContentView(R.layout.activity_main)
+
+        val spinnerSexo = findViewById<Spinner>(R.id.spinner_sexo)
+        val editTextIdade = findViewById<EditText>(R.id.edit_text_idade)
+        val buttonCalcular = findViewById<Button>(R.id.button_calcular)
+        val textViewResultado = findViewById<TextView>(R.id.text_view_resultado)
+
+        val adapter = ArrayAdapter(
+            /* context = */ this,
+            /* resource = */ android.R.layout.simple_spinner_dropdown_item,
+            /* objects = */ listOf("masculino", "feminino")
+        )
+
+        spinnerSexo.adapter = adapter
+
+        buttonCalcular.setOnClickListener {
+            val sexoSelecionado = spinnerSexo.selectedItem as String
+            val idade = editTextIdade.text.toString().toInt()
+            var resultado = 0
+
+            if (sexoSelecionado == "masculino") {
+                resultado = 65 - idade
+            } else {
+                resultado = 62 - idade
             }
+
+            textViewResultado.text = "Faltam $resultado anos para você se aposentar."
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CalculoAposentadoriaTheme {
-        Greeting("Android")
     }
 }
